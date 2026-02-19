@@ -1,0 +1,921 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Aktiviti Kod Warna – Cikgu Jamuna SK Jasin 2026</title>
+<style>
+  :root {
+    --biru:#4472C4; --oren:#ED7D31; --hijaumuda:#70AD47;
+    --merah:#E72F2F; --kuning:#FFC000; --ungu:#7030A0;
+    --jambu:#FF0099; --hijautua:#00B050;
+    --bg:#f0f9ff; --card:#ffffff; --accent:#FF5C8D;
+    --txt:#1a1a2e; --shadow:0 4px 18px rgba(0,0,0,.12);
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:'Comic Sans MS','Comic Sans',cursive;background:var(--bg);color:var(--txt);min-height:100vh;}
+
+  /* Header */
+  header{
+    background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);
+    color:#fff;padding:20px 16px 16px;text-align:center;
+    box-shadow:0 4px 20px rgba(102,126,234,.4);
+  }
+  header h1{font-size:clamp(1.1rem,3.5vw,1.8rem);font-weight:900;letter-spacing:-.5px;}
+  header p{font-size:.82rem;opacity:.85;margin-top:4px;}
+
+  /* Progress bar */
+  #progress-wrap{background:rgba(255,255,255,.25);border-radius:20px;height:10px;margin:12px auto 0;max-width:400px;}
+  #progress-bar{height:10px;border-radius:20px;background:#fff;width:0%;transition:width .5s;}
+
+  /* Music button */
+  #music-btn{
+    margin-top:12px;background:rgba(255,255,255,.2);color:#fff;
+    border:2px solid rgba(255,255,255,.5);border-radius:20px;
+    padding:6px 16px;font-family:'Comic Sans MS','Comic Sans',cursive;
+    font-size:.82rem;font-weight:700;cursor:pointer;transition:all .2s;
+    display:inline-block;
+  }
+  #music-btn:hover{background:rgba(255,255,255,.35);}
+  #music-btn.off{background:rgba(0,0,0,.2);border-color:rgba(255,255,255,.25);opacity:.7;}
+
+  /* Tab bar */
+  nav{display:flex;overflow-x:auto;background:#fff;box-shadow:var(--shadow);gap:4px;padding:8px 8px 0;
+      scrollbar-width:none;position:sticky;top:0;z-index:100;}
+  nav::-webkit-scrollbar{display:none;}
+  .tab-btn{
+    flex-shrink:0;padding:8px 14px;border:none;border-radius:10px 10px 0 0;
+    background:#e8eef6;cursor:pointer;font-family:'Comic Sans MS','Comic Sans',cursive;font-size:.78rem;
+    font-weight:700;color:#555;transition:all .2s;white-space:nowrap;
+  }
+  .tab-btn.active{background:var(--accent);color:#fff;transform:translateY(-2px);}
+  .tab-btn:hover:not(.active){background:#d0dcea;}
+
+  /* Sections */
+  section{display:none;padding:16px;}
+  section.active{display:block;}
+
+  /* Card */
+  .card{background:var(--card);border-radius:18px;padding:18px 16px;margin-bottom:16px;box-shadow:var(--shadow);}
+  .section-title{font-size:1.2rem;font-weight:900;color:#4a3f8a;margin-bottom:4px;}
+  .section-sub{font-size:.82rem;color:#666;margin-bottom:14px;font-style:italic;}
+
+  /* Legend */
+  .legend{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:18px;}
+  .legend-item{
+    display:flex;flex-direction:column;align-items:center;gap:4px;
+    min-width:56px;
+  }
+  .dot{
+    width:44px;height:44px;border-radius:50%;display:flex;align-items:center;
+    justify-content:center;color:#fff;font-weight:900;font-size:.95rem;
+    box-shadow:0 3px 8px rgba(0,0,0,.22);flex-shrink:0;
+  }
+  .dot.small{width:36px;height:36px;font-size:.8rem;}
+  .legend-label{font-size:.75rem;font-weight:700;color:#555;text-align:center;}
+
+  /* Questions */
+  .questions{display:flex;flex-direction:column;gap:14px;}
+  .q-row{
+    display:flex;align-items:center;gap:10px;flex-wrap:wrap;
+    background:#f7f9ff;border-radius:12px;padding:10px 12px;
+  }
+  .q-circles{display:flex;gap:6px;flex-wrap:wrap;align-items:center;}
+  .arrow{font-size:1.3rem;color:#999;flex-shrink:0;}
+  .answer-wrap{display:flex;align-items:center;gap:6px;flex:1;min-width:120px;}
+  .answer-input{
+    border:2.5px solid #c8d8ee;border-radius:10px;padding:8px 12px;
+    font-family:'Comic Sans MS','Comic Sans',cursive;font-size:1.1rem;font-weight:700;
+    width:100%;max-width:160px;outline:none;transition:border .2s;
+    text-transform:none;
+  }
+  .answer-input:focus{border-color:#764ba2;}
+  .answer-input.correct{border-color:#22c55e;background:#f0fff4;color:#15803d;}
+  .answer-input.wrong{border-color:#ef4444;background:#fff5f5;color:#b91c1c;}
+  .check-btn{
+    background:#764ba2;color:#fff;border:none;border-radius:8px;
+    padding:8px 12px;cursor:pointer;font-family:'Comic Sans MS','Comic Sans',cursive;
+    font-weight:700;font-size:.78rem;flex-shrink:0;transition:all .2s;
+  }
+  .check-btn:hover{background:#5a2d91;transform:scale(1.04);}
+  .feedback{font-size:1.2rem;flex-shrink:0;}
+
+  /* Score bar */
+  .score-bar{
+    display:flex;align-items:center;justify-content:space-between;
+    background:#f0ebff;border-radius:12px;padding:10px 16px;margin-top:12px;
+  }
+  .score-text{font-weight:800;font-size:.95rem;color:#4a3f8a;}
+  .check-all-btn{
+    background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;
+    border:none;border-radius:10px;padding:9px 18px;
+    font-family:'Comic Sans MS','Comic Sans',cursive;font-weight:800;font-size:.85rem;
+    cursor:pointer;transition:all .2s;
+  }
+  .check-all-btn:hover{transform:scale(1.05);box-shadow:0 4px 14px rgba(102,126,234,.4);}
+  .reset-btn{
+    background:#e2e8f0;color:#555;border:none;border-radius:10px;
+    padding:9px 14px;font-family:'Comic Sans MS','Comic Sans',cursive;font-weight:700;
+    font-size:.82rem;cursor:pointer;margin-left:8px;
+  }
+
+  /* Stars animation */
+  @keyframes pop{0%{transform:scale(0) rotate(-20deg);opacity:0}60%{transform:scale(1.3) rotate(5deg);opacity:1}100%{transform:scale(1) rotate(0deg);opacity:1}}
+  #confetti-canvas{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:9999;}
+  .star-pop{animation:pop .4s ease forwards;}
+
+  /* Toast */
+  #toast{
+    position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(60px);
+    background:#1a1a2e;color:#fff;padding:12px 24px;border-radius:30px;
+    font-weight:700;font-size:.9rem;z-index:999;transition:transform .3s;pointer-events:none;
+  }
+  #toast.show{transform:translateX(-50%) translateY(0);}
+
+  /* Mobile friendly */
+  @media(max-width:480px){
+    .dot{width:38px;height:38px;font-size:.82rem;}
+    .legend-item{min-width:46px;}
+    .answer-input{max-width:130px;font-size:1rem;}
+  }
+
+  /* ── Papan Tanda Markah ───────────────────────── */
+  .markah-panel{
+    display:none;
+    margin-top:18px;border-radius:20px;overflow:hidden;
+    box-shadow:0 8px 30px rgba(0,0,0,.18);
+    animation:slideUp .5s ease forwards;
+  }
+  @keyframes slideUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
+  .markah-panel.show{display:block;}
+
+  .markah-header{
+    padding:18px 20px 14px;text-align:center;color:#fff;
+    font-size:1rem;font-weight:900;letter-spacing:.5px;
+  }
+  .markah-title-row{font-size:1.3rem;margin-bottom:4px;}
+  .markah-subtitle{font-size:.82rem;opacity:.85;}
+
+  .markah-body{
+    background:#fff;padding:20px 16px;
+    display:flex;flex-direction:column;align-items:center;gap:14px;
+  }
+
+  /* Big score circle */
+  .markah-circle{
+    width:110px;height:110px;border-radius:50%;
+    display:flex;flex-direction:column;align-items:center;justify-content:center;
+    font-weight:900;box-shadow:0 6px 20px rgba(0,0,0,.18);
+    border:5px solid #fff;
+  }
+  .markah-circle .num{font-size:2rem;line-height:1;}
+  .markah-circle .denom{font-size:.85rem;opacity:.8;}
+
+  /* Stars row */
+  .markah-stars{font-size:2rem;letter-spacing:4px;}
+
+  /* Grade badge */
+  .markah-grade{
+    padding:8px 28px;border-radius:30px;
+    font-size:1.1rem;font-weight:900;color:#fff;
+    box-shadow:0 4px 14px rgba(0,0,0,.15);
+  }
+
+  /* Message */
+  .markah-msg{
+    font-size:.95rem;font-weight:700;color:#555;text-align:center;
+    background:#f7f9ff;border-radius:12px;padding:10px 16px;width:100%;
+  }
+
+  /* Per-question breakdown */
+  .markah-breakdown{width:100%;}
+  .markah-breakdown-title{font-size:.8rem;font-weight:700;color:#aaa;
+    text-align:center;margin-bottom:8px;text-transform:uppercase;letter-spacing:1px;}
+  .breakdown-list{display:flex;flex-direction:column;gap:6px;}
+  .breakdown-row{
+    display:flex;align-items:center;justify-content:space-between;
+    background:#f0f4ff;border-radius:10px;padding:7px 12px;
+    font-size:.85rem;
+  }
+  .breakdown-row .bq-num{color:#aaa;font-weight:700;min-width:24px;}
+  .breakdown-row .bq-ans{font-weight:800;color:#333;flex:1;margin:0 8px;}
+  .breakdown-row .bq-result{font-size:1.1rem;}
+
+  /* Footer buttons */
+  .markah-footer{
+    display:flex;gap:8px;justify-content:center;padding:14px 16px;
+    background:#f7f7f7;border-top:1px solid #eee;
+  }
+  .markah-retry{
+    background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;
+    border:none;border-radius:12px;padding:10px 22px;
+    font-family:'Comic Sans MS','Comic Sans',cursive;
+    font-weight:800;font-size:.88rem;cursor:pointer;transition:all .2s;
+  }
+  .markah-retry:hover{transform:scale(1.05);box-shadow:0 4px 14px rgba(102,126,234,.4);}
+  .markah-next{
+    background:linear-gradient(135deg,#11998e,#38ef7d);color:#fff;
+    border:none;border-radius:12px;padding:10px 22px;
+    font-family:'Comic Sans MS','Comic Sans',cursive;
+    font-weight:800;font-size:.88rem;cursor:pointer;transition:all .2s;
+  }
+  .markah-next:hover{transform:scale(1.05);}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>🌈 Aktiviti Kod Warna – Membina Perkataan</h1>
+  <p>Dihasilkan oleh Cikgu Jamuna | Guru Pemulihan Khas SK Jasin 2026</p>
+  <div id="progress-wrap"><div id="progress-bar"></div></div>
+  <button id="music-btn" onclick="toggleMusic()">🎵 Muzik: HIDUP</button>
+</header>
+
+<nav id="tab-nav"></nav>
+
+<main id="main-content"></main>
+
+<div id="toast"></div>
+<canvas id="confetti-canvas"></canvas>
+
+<script>
+// ─── Audio Engine (Web Audio API) ────────────────────────────────────────────
+let audioCtx = null;
+let bgNodes = [];
+let bgPlaying = false;
+let musicEnabled = true;
+
+function getCtx(){
+  if(!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  return audioCtx;
+}
+
+// Clapping sound: bursts of filtered noise
+function playClap(){
+  const ctx = getCtx();
+  for(let i=0;i<5;i++){
+    setTimeout(()=>{
+      const buf = ctx.createBuffer(1, ctx.sampleRate*0.08, ctx.sampleRate);
+      const d = buf.getChannelData(0);
+      for(let j=0;j<d.length;j++) d[j]=(Math.random()*2-1)*Math.pow(1-j/d.length,2);
+      const src = ctx.createBufferSource();
+      src.buffer = buf;
+      const hp = ctx.createBiquadFilter();
+      hp.type='highpass'; hp.frequency.value=1200;
+      const gain = ctx.createGain();
+      gain.gain.setValueAtTime(0.7,ctx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.001,ctx.currentTime+0.08);
+      src.connect(hp); hp.connect(gain); gain.connect(ctx.destination);
+      src.start();
+    }, i*90);
+  }
+}
+
+// Wrong answer: descending "boop" sound
+function playWrong(){
+  const ctx = getCtx();
+  const osc = ctx.createOscillator();
+  const gain = ctx.createGain();
+  osc.type='sine';
+  osc.frequency.setValueAtTime(440,ctx.currentTime);
+  osc.frequency.linearRampToValueAtTime(220,ctx.currentTime+0.35);
+  gain.gain.setValueAtTime(0.4,ctx.currentTime);
+  gain.gain.exponentialRampToValueAtTime(0.001,ctx.currentTime+0.38);
+  osc.connect(gain); gain.connect(ctx.destination);
+  osc.start(); osc.stop(ctx.currentTime+0.38);
+}
+
+// Fanfare for perfect score
+function playFanfare(){
+  const ctx = getCtx();
+  const notes=[523,659,784,1047];
+  notes.forEach((freq,i)=>{
+    setTimeout(()=>{
+      const osc=ctx.createOscillator();
+      const gain=ctx.createGain();
+      osc.type='triangle';
+      osc.frequency.value=freq;
+      gain.gain.setValueAtTime(0.3,ctx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.001,ctx.currentTime+0.25);
+      osc.connect(gain); gain.connect(ctx.destination);
+      osc.start(); osc.stop(ctx.currentTime+0.25);
+    },i*150);
+  });
+}
+
+// Background music: cheerful children's melody loop (Twinkle Twinkle)
+const melody=[
+  [261,0.4],[261,0.4],[392,0.4],[392,0.4],[440,0.4],[440,0.4],[392,0.8],
+  [349,0.4],[349,0.4],[330,0.4],[330,0.4],[294,0.4],[294,0.4],[261,0.8],
+  [392,0.4],[392,0.4],[349,0.4],[349,0.4],[330,0.4],[330,0.4],[294,0.8],
+  [392,0.4],[392,0.4],[349,0.4],[349,0.4],[330,0.4],[330,0.4],[294,0.8],
+  [261,0.4],[261,0.4],[392,0.4],[392,0.4],[440,0.4],[440,0.4],[392,0.8],
+  [349,0.4],[349,0.4],[330,0.4],[330,0.4],[294,0.4],[294,0.4],[261,0.8],
+];
+let bgTimer=null;
+
+function playBgMusic(){
+  if(!musicEnabled) return;
+  const ctx=getCtx();
+  if(ctx.state==='suspended') ctx.resume();
+  let time=ctx.currentTime+0.1;
+  melody.forEach(([freq,dur])=>{
+    const osc=ctx.createOscillator();
+    const gain=ctx.createGain();
+    osc.type='sine';
+    osc.frequency.value=freq;
+    gain.gain.setValueAtTime(0,time);
+    gain.gain.linearRampToValueAtTime(0.08,time+0.02);
+    gain.gain.setValueAtTime(0.08,time+dur-0.05);
+    gain.gain.linearRampToValueAtTime(0,time+dur);
+    osc.connect(gain); gain.connect(ctx.destination);
+    osc.start(time); osc.stop(time+dur);
+    bgNodes.push(osc);
+    time+=dur;
+  });
+  const totalDur=(melody.reduce((s,[,d])=>s+d,0))*1000+200;
+  bgTimer=setTimeout(()=>{ if(musicEnabled) playBgMusic(); },totalDur);
+  bgPlaying=true;
+}
+
+function stopBgMusic(){
+  clearTimeout(bgTimer);
+  bgNodes.forEach(n=>{try{n.stop();}catch(e){}});
+  bgNodes=[];
+  bgPlaying=false;
+}
+
+function toggleMusic(){
+  musicEnabled=!musicEnabled;
+  const btn=document.getElementById('music-btn');
+  if(musicEnabled){
+    btn.textContent='🎵 Muzik: HIDUP';
+    btn.classList.remove('off');
+    playBgMusic();
+  } else {
+    btn.textContent='🔇 Muzik: MATI';
+    btn.classList.add('off');
+    stopBgMusic();
+  }
+}
+
+// Start music on first user interaction
+function startAudioOnInteraction(){
+  if(!bgPlaying && musicEnabled) playBgMusic();
+  document.removeEventListener('click',startAudioOnInteraction);
+  document.removeEventListener('keydown',startAudioOnInteraction);
+}
+document.addEventListener('click',startAudioOnInteraction);
+document.addEventListener('keydown',startAudioOnInteraction);
+
+// ─── Confetti ─────────────────────────────────────────────────────────────────
+function launchConfetti(){
+  const canvas=document.getElementById('confetti-canvas');
+  const ctx2=canvas.getContext('2d');
+  canvas.width=window.innerWidth; canvas.height=window.innerHeight;
+  const pieces=[];
+  const colors=['#FF5C8D','#FFC000','#4472C4','#70AD47','#FF0099','#7030A0','#ED7D31','#E72F2F'];
+  for(let i=0;i<120;i++){
+    pieces.push({
+      x:Math.random()*canvas.width, y:-20,
+      r:Math.random()*8+4,
+      color:colors[Math.floor(Math.random()*colors.length)],
+      vx:(Math.random()-0.5)*4, vy:Math.random()*4+2,
+      rot:Math.random()*360, vr:(Math.random()-0.5)*8,
+      alpha:1
+    });
+  }
+  let frame=0;
+  function draw(){
+    ctx2.clearRect(0,0,canvas.width,canvas.height);
+    pieces.forEach(p=>{
+      ctx2.save();
+      ctx2.globalAlpha=p.alpha;
+      ctx2.fillStyle=p.color;
+      ctx2.translate(p.x,p.y);
+      ctx2.rotate(p.rot*Math.PI/180);
+      ctx2.fillRect(-p.r/2,-p.r/2,p.r,p.r);
+      ctx2.restore();
+      p.x+=p.vx; p.y+=p.vy; p.rot+=p.vr;
+      if(frame>60) p.alpha-=0.015;
+    });
+    frame++;
+    if(frame<130) requestAnimationFrame(draw);
+    else ctx2.clearRect(0,0,canvas.width,canvas.height);
+  }
+  draw();
+}
+
+// ─── Colour palette ───────────────────────────────────────────────────────────
+const C = {
+  biru:     {css:"#4472C4", label:"Biru"},
+  oren:     {css:"#ED7D31", label:"Oren"},
+  hjMuda:   {css:"#70AD47", label:"Hjau Muda"},
+  merah:    {css:"#E72F2F", label:"Merah"},
+  kuning:   {css:"#FFC000", label:"Kuning"},
+  ungu:     {css:"#7030A0", label:"Ungu"},
+  jambu:    {css:"#FF0099", label:"Mh. Jambu"},
+  hjTua:    {css:"#00B050", label:"Hjau Tua"},
+};
+
+// ─── Section data ─────────────────────────────────────────────────────────────
+const sections = [
+
+  // ── 1. Huruf Vokal ────────────────────────────────────────────────────────
+  { id:"vokal", title:"Huruf Vokal", sub:"Tulis huruf vokal yang betul mengikut kod warna.",
+    marks:8,
+    legend:[
+      {col:"biru",   val:"A"}, {col:"oren",   val:"a"},
+      {col:"hjMuda", val:"E"}, {col:"merah",  val:"e"},
+      {col:"kuning", val:"I"}, {col:"ungu",   val:"o"},
+      {col:"jambu",  val:"U"}, {col:"hjTua",  val:"i"},
+    ],
+    qs:[
+      {circles:["kuning"],            answer:"I"},
+      {circles:["jambu"],             answer:"U"},
+      {circles:["hjTua"],             answer:"i"},
+      {circles:["ungu"],              answer:"o"},
+      {circles:["merah"],             answer:"e"},
+      {circles:["biru"],              answer:"A"},
+      {circles:["hjMuda"],            answer:"E"},
+      {circles:["oren"],              answer:"a"},
+    ]
+  },
+
+  // ── 2. Huruf Kecil ────────────────────────────────────────────────────────
+  { id:"kecil", title:"Huruf Kecil", sub:"Tulis huruf kecil yang betul mengikut kod warna.",
+    marks:8,
+    legend:[
+      {col:"biru",   val:"b"}, {col:"oren",   val:"d"},
+      {col:"hjMuda", val:"g"}, {col:"merah",  val:"h"},
+      {col:"kuning", val:"y"}, {col:"ungu",   val:"j"},
+      {col:"jambu",  val:"m"}, {col:"hjTua",  val:"w"},
+    ],
+    qs:[
+      {circles:["hjMuda"],  answer:"g"},
+      {circles:["hjTua"],   answer:"w"},
+      {circles:["oren"],    answer:"d"},
+      {circles:["kuning"],  answer:"y"},
+      {circles:["biru"],    answer:"b"},
+      {circles:["merah"],   answer:"h"},
+      {circles:["jambu"],   answer:"m"},
+      {circles:["ungu"],    answer:"j"},
+    ]
+  },
+
+  // ── 3. Huruf Besar ────────────────────────────────────────────────────────
+  { id:"besar", title:"Huruf Besar", sub:"Tulis huruf besar yang betul mengikut kod warna.",
+    marks:8,
+    legend:[
+      {col:"biru",   val:"D"}, {col:"oren",   val:"F"},
+      {col:"hjMuda", val:"H"}, {col:"merah",  val:"M"},
+      {col:"kuning", val:"K"}, {col:"ungu",   val:"L"},
+      {col:"jambu",  val:"J"}, {col:"hjTua",  val:"T"},
+    ],
+    qs:[
+      {circles:["jambu"],   answer:"J"},
+      {circles:["biru"],    answer:"D"},
+      {circles:["ungu"],    answer:"L"},
+      {circles:["kuning"],  answer:"K"},
+      {circles:["merah"],   answer:"M"},
+      {circles:["hjTua"],   answer:"T"},
+      {circles:["hjMuda"],  answer:"H"},
+      {circles:["oren"],    answer:"F"},
+    ]
+  },
+
+  // ── 4. KV ─────────────────────────────────────────────────────────────────
+  { id:"kv", title:"Kemahiran KV", sub:"Cantumkan huruf mengikut kod warna untuk membina suku kata KV.",
+    marks:5,
+    legend:[
+      {col:"biru",   val:"a"}, {col:"oren",   val:"e"},
+      {col:"hjMuda", val:"o"}, {col:"merah",  val:"k"},
+      {col:"kuning", val:"l"}, {col:"ungu",   val:"c"},
+      {col:"jambu",  val:"u"}, {col:"hjTua",  val:"i"},
+    ],
+    qs:[
+      {circles:["ungu","biru"],    answer:"ca"},
+      {circles:["merah","hjTua"],  answer:"ki"},
+      {circles:["kuning","jambu"], answer:"lu"},
+      {circles:["ungu","oren"],    answer:"ce"},
+      {circles:["merah","hjMuda"], answer:"ko"},
+    ]
+  },
+
+  // ── 5. KV+KV ──────────────────────────────────────────────────────────────
+  { id:"kvkv", title:"Kemahiran KV+KV", sub:"Cantumkan 4 huruf mengikut kod warna untuk membina perkataan.",
+    marks:5,
+    legend:[
+      {col:"biru",   val:"a"}, {col:"oren",   val:"e"},
+      {col:"hjMuda", val:"o"}, {col:"merah",  val:"b"},
+      {col:"kuning", val:"l"}, {col:"ungu",   val:"c"},
+      {col:"jambu",  val:"u"}, {col:"hjTua",  val:"i"},
+    ],
+    qs:[
+      {circles:["merah","biru","ungu","biru"],       answer:"baca"},
+      {circles:["merah","oren","ungu","biru"],       answer:"beca"},
+      {circles:["merah","hjMuda","kuning","biru"],   answer:"bola"},
+      {circles:["kuning","biru","ungu","hjTua"],     answer:"laci"},
+      {circles:["ungu","jambu","ungu","hjTua"],      answer:"cuci"},
+    ]
+  },
+
+  // ── 6. V+KVK ──────────────────────────────────────────────────────────────
+  { id:"vkvk", title:"Kemahiran V+KVK", sub:"Cantumkan 4 huruf mengikut kod warna untuk membina perkataan.",
+    marks:5,
+    legend:[
+      {col:"biru",   val:"a"}, {col:"oren",   val:"e"},
+      {col:"hjMuda", val:"t"}, {col:"merah",  val:"k"},
+      {col:"kuning", val:"m"}, {col:"ungu",   val:"n"},
+      {col:"jambu",  val:"o"}, {col:"hjTua",  val:"i"},
+    ],
+    qs:[
+      {circles:["oren","ungu","biru","kuning"],         answer:"enam"},
+      {circles:["hjTua","merah","biru","ungu"],         answer:"ikan"},
+      {circles:["hjTua","merah","biru","hjMuda"],       answer:"ikat"},
+      {circles:["biru","ungu","biru","merah"],          answer:"anak"},
+      {circles:["jambu","hjMuda","jambu","hjMuda"],     answer:"otot"},
+    ]
+  },
+
+  // ── 7. KV+KV+KV ───────────────────────────────────────────────────────────
+  { id:"kvkvkv", title:"Kemahiran KV+KV+KV", sub:"Cantumkan 3 suku kata mengikut kod warna untuk membina perkataan.",
+    marks:5,
+    legend:[
+      {col:"biru",   val:"ba"}, {col:"oren",   val:"te"},
+      {col:"hjMuda", val:"ke"}, {col:"merah",  val:"pa"},
+      {col:"kuning", val:"la"}, {col:"ungu",   val:"ya"},
+      {col:"jambu",  val:"di"}, {col:"hjTua",  val:"ri"},
+    ],
+    qs:[
+      {circles:["biru","oren","hjTua"],     answer:"bateri"},
+      {circles:["hjMuda","oren","merah"],   answer:"ketepa"},
+      {circles:["hjMuda","merah","kuning"], answer:"kepala"},
+      {circles:["hjMuda","biru","ungu"],    answer:"kebaya"},
+      {circles:["hjMuda","kuning","jambu"], answer:"keladi"},
+    ]
+  },
+
+  // ── 8. KVK ────────────────────────────────────────────────────────────────
+  { id:"kvk", title:"Kemahiran KVK", sub:"Cantumkan 3 huruf mengikut kod warna untuk membina perkataan KVK.",
+    marks:5,
+    legend:[
+      {col:"biru",   val:"a"}, {col:"oren",   val:"e"},
+      {col:"hjMuda", val:"o"}, {col:"merah",  val:"p"},
+      {col:"kuning", val:"m"}, {col:"ungu",   val:"n"},
+      {col:"jambu",  val:"u"}, {col:"hjTua",  val:"i"},
+    ],
+    qs:[
+      {circles:["merah","oren","ungu"],    answer:"pen"},
+      {circles:["kuning","hjMuda","merah"],answer:"mop"},
+      {circles:["merah","biru","kuning"],  answer:"pam"},
+      {circles:["kuning","biru","merah"],  answer:"map"},
+      {circles:["merah","jambu","ungu"],   answer:"pun"},
+    ]
+  },
+
+  // ── 9. KV+KVK ─────────────────────────────────────────────────────────────
+  { id:"kvkvk", title:"Kemahiran KV+KVK", sub:"Cantumkan 5 huruf mengikut kod warna untuk membina perkataan.",
+    marks:4,
+    legend:[
+      {col:"biru",   val:"a"}, {col:"oren",   val:"t"},
+      {col:"hjMuda", val:"s"}, {col:"merah",  val:"r"},
+      {col:"kuning", val:"m"}, {col:"ungu",   val:"n"},
+      {col:"jambu",  val:"i"}, {col:"hjTua",  val:"k"},
+    ],
+    qs:[
+      {circles:["hjTua","biru","oren","biru","hjTua"],  answer:"katak"},
+      {circles:["oren","biru","kuning","biru","ungu"],  answer:"taman"},
+      {circles:["ungu","biru","ungu","biru","hjMuda"],  answer:"nanas"},
+      {circles:["merah","biru","hjTua","jambu","oren"], answer:"rakit"},
+    ]
+  },
+
+];
+
+// ─── State ────────────────────────────────────────────────────────────────────
+let scores = {};
+sections.forEach(s=>{ scores[s.id]={correct:0,total:s.marks}; });
+
+// ─── Build UI ─────────────────────────────────────────────────────────────────
+function dot(colKey, txt, small){
+  const d = document.createElement('div');
+  d.className = 'dot' + (small?' small':'');
+  d.style.background = C[colKey].css;
+  d.textContent = txt;
+  return d;
+}
+
+function buildSection(sec){
+  const wrap = document.createElement('section');
+  wrap.id = 'sec-'+sec.id;
+
+  // Card
+  const card = document.createElement('div');
+  card.className='card';
+  card.innerHTML=`<div class="section-title">🌟 ${sec.title}</div>
+                  <div class="section-sub">${sec.sub}</div>`;
+
+  // Legend
+  const leg = document.createElement('div');
+  leg.className='legend';
+  sec.legend.forEach(l=>{
+    const item=document.createElement('div');
+    item.className='legend-item';
+    item.appendChild(dot(l.col, l.val, false));
+    const lbl=document.createElement('div');
+    lbl.className='legend-label';
+    lbl.textContent=C[l.col].label;
+    item.appendChild(lbl);
+    leg.appendChild(item);
+  });
+  card.appendChild(leg);
+
+  // Questions
+  const qs = document.createElement('div');
+  qs.className='questions';
+  sec.qs.forEach((q,i)=>{
+    const row=document.createElement('div');
+    row.className='q-row';
+    row.dataset.answer=q.answer.toLowerCase();
+    row.dataset.idx=i;
+
+    // Number
+    const num=document.createElement('span');
+    num.style.cssText='font-weight:900;color:#aaa;font-size:.85rem;min-width:20px;';
+    num.textContent=(i+1)+'.';
+    row.appendChild(num);
+
+    // Circles
+    const circ=document.createElement('div');
+    circ.className='q-circles';
+    q.circles.forEach(ck=>{
+      const d=document.createElement('div');
+      d.className='dot small';
+      d.style.background=C[ck].css;
+      circ.appendChild(d);
+    });
+    row.appendChild(circ);
+
+    // Arrow
+    const arr=document.createElement('span');
+    arr.className='arrow';
+    arr.textContent='➜';
+    row.appendChild(arr);
+
+    // Answer wrap
+    const aw=document.createElement('div');
+    aw.className='answer-wrap';
+    const inp=document.createElement('input');
+    inp.type='text';
+    inp.className='answer-input';
+    inp.placeholder='Jawapan…';
+    inp.autocomplete='off';
+    inp.autocorrect='off';
+    inp.spellcheck=false;
+    inp.dataset.secId=sec.id;
+    inp.addEventListener('keydown',e=>{ if(e.key==='Enter') checkOne(inp); });
+
+    const btn=document.createElement('button');
+    btn.className='check-btn';
+    btn.textContent='Semak';
+    btn.onclick=()=>checkOne(inp);
+
+    const fb=document.createElement('span');
+    fb.className='feedback';
+
+    aw.appendChild(inp);
+    aw.appendChild(btn);
+    aw.appendChild(fb);
+    row.appendChild(aw);
+    qs.appendChild(row);
+  });
+  card.appendChild(qs);
+
+  // Score bar
+  const sb=document.createElement('div');
+  sb.className='score-bar';
+  const st=document.createElement('span');
+  st.className='score-text';
+  st.id='score-'+sec.id;
+  st.textContent=`Markah: 0 / ${sec.marks}`;
+  const btnWrap=document.createElement('div');
+  const ca=document.createElement('button');
+  ca.className='check-all-btn';
+  ca.textContent='✅ Semak Semua';
+  ca.onclick=()=>checkAll(sec.id);
+  const rb=document.createElement('button');
+  rb.className='reset-btn';
+  rb.textContent='🔄 Mula Semula';
+  rb.onclick=()=>resetSection(sec.id);
+  btnWrap.appendChild(ca);
+  btnWrap.appendChild(rb);
+  sb.appendChild(st);
+  sb.appendChild(btnWrap);
+  card.appendChild(sb);
+
+  // ── Papan Tanda Markah panel ──
+  const mp = document.createElement('div');
+  mp.className='markah-panel';
+  mp.id='markah-'+sec.id;
+  mp.innerHTML=`
+    <div class="markah-header" id="mh-${sec.id}">
+      <div class="markah-title-row">📊 Papan Tanda Markah</div>
+      <div class="markah-subtitle">${sec.title}</div>
+    </div>
+    <div class="markah-body">
+      <div class="markah-circle" id="mc-${sec.id}">
+        <span class="num" id="mn-${sec.id}">0</span>
+        <span class="denom">/ ${sec.marks}</span>
+      </div>
+      <div class="markah-stars" id="ms-${sec.id}"></div>
+      <div class="markah-grade" id="mg-${sec.id}"></div>
+      <div class="markah-msg" id="mm-${sec.id}"></div>
+      <div class="markah-breakdown">
+        <div class="markah-breakdown-title">Semakan Jawapan</div>
+        <div class="breakdown-list" id="mb-${sec.id}"></div>
+      </div>
+    </div>
+    <div class="markah-footer">
+      <button class="markah-retry" onclick="resetAndHideMarkah('${sec.id}')">🔄 Cuba Lagi</button>
+      <button class="markah-next" onclick="nextTab('${sec.id}')">➡️ Kemahiran Seterusnya</button>
+    </div>
+  `;
+  card.appendChild(mp);
+
+  wrap.appendChild(card);
+  return wrap;
+}
+
+function checkOne(inp){
+  const row=inp.closest('.q-row');
+  const ans=row.dataset.answer;
+  const val=inp.value.trim().toLowerCase();
+  const fb=row.querySelector('.feedback');
+  if(!val){toast('Sila isi jawapan dahulu! ✏️'); return;}
+  if(val===ans){
+    inp.classList.add('correct'); inp.classList.remove('wrong');
+    fb.textContent='⭐'; fb.className='feedback star-pop';
+    playClap();
+  } else {
+    inp.classList.add('wrong'); inp.classList.remove('correct');
+    fb.textContent='❌'; fb.className='feedback';
+    playWrong();
+  }
+  updateScore(inp.dataset.secId);
+}
+
+function checkAll(secId){
+  const sec=document.getElementById('sec-'+secId);
+  sec.querySelectorAll('.answer-input').forEach(inp=>checkOne(inp));
+}
+
+function resetSection(secId){
+  const sec=document.getElementById('sec-'+secId);
+  sec.querySelectorAll('.answer-input').forEach(inp=>{
+    inp.value='';
+    inp.className='answer-input';
+  });
+  sec.querySelectorAll('.feedback').forEach(fb=>fb.textContent='');
+  scores[secId].correct=0;
+  document.getElementById('score-'+secId).textContent=`Markah: 0 / ${scores[secId].total}`;
+  const panel=document.getElementById('markah-'+secId);
+  if(panel) panel.classList.remove('show');
+  updateProgress();
+}
+
+function getGrade(c,t){
+  const pct=c/t*100;
+  if(pct===100) return {g:'A+',col:'#22c55e',bg:'linear-gradient(135deg,#22c55e,#16a34a)',msg:'Luar biasa! Semua betul! Cikgu bangga dengan kamu! 🏆',stars:5};
+  if(pct>=80)   return {g:'A', col:'#4ade80',bg:'linear-gradient(135deg,#4ade80,#22c55e)',msg:'Bagus sekali! Hampir sempurna! Teruskan usaha! 🌟',stars:4};
+  if(pct>=60)   return {g:'B', col:'#60a5fa',bg:'linear-gradient(135deg,#60a5fa,#3b82f6)',msg:'Bagus! Kamu boleh buat lagi baik! Cuba lagi! 💪',stars:3};
+  if(pct>=40)   return {g:'C', col:'#fb923c',bg:'linear-gradient(135deg,#fb923c,#f97316)',msg:'Jangan putus asa! Cuba lagi dengan lebih teliti! 😊',stars:2};
+  return         {g:'D', col:'#f87171',bg:'linear-gradient(135deg,#f87171,#ef4444)',msg:'Jom cuba lagi! Cikgu percaya kamu boleh buat lebih baik! 🤗',stars:1};
+}
+
+function showMarkah(secId){
+  const secData = sections.find(s=>s.id===secId);
+  const correct = scores[secId].correct;
+  const total   = scores[secId].total;
+  const grade   = getGrade(correct,total);
+
+  // header colour
+  document.getElementById('mh-'+secId).style.background=grade.bg;
+
+  // circle
+  const circ=document.getElementById('mc-'+secId);
+  circ.style.background=grade.bg;
+  document.getElementById('mn-'+secId).textContent=correct;
+
+  // stars
+  const stars='⭐'.repeat(grade.stars)+'☆'.repeat(5-grade.stars);
+  document.getElementById('ms-'+secId).textContent=stars;
+
+  // grade badge
+  const gb=document.getElementById('mg-'+secId);
+  gb.textContent='Gred: '+grade.g;
+  gb.style.background=grade.bg;
+
+  // message
+  document.getElementById('mm-'+secId).textContent=grade.msg;
+
+  // breakdown
+  const bl=document.getElementById('mb-'+secId);
+  bl.innerHTML='';
+  const secEl=document.getElementById('sec-'+secId);
+  const inputs=secEl.querySelectorAll('.answer-input');
+  inputs.forEach((inp,i)=>{
+    const row=inp.closest('.q-row');
+    const correctAns=row.dataset.answer;
+    const userAns=inp.value.trim()||'—';
+    const isOk=inp.classList.contains('correct');
+    const div=document.createElement('div');
+    div.className='breakdown-row';
+    div.innerHTML=`<span class="bq-num">${i+1}.</span>
+      <span class="bq-ans">${isOk?'<span style="color:#16a34a">'+userAns+'</span>':'<span style="color:#dc2626">'+userAns+'</span> <span style="color:#aaa;font-size:.8rem">→ '+correctAns+'</span>'}</span>
+      <span class="bq-result">${isOk?'✅':'❌'}</span>`;
+    bl.appendChild(div);
+  });
+
+  // show panel
+  const panel=document.getElementById('markah-'+secId);
+  panel.classList.add('show');
+  panel.scrollIntoView({behavior:'smooth',block:'start'});
+}
+
+function resetAndHideMarkah(secId){
+  document.getElementById('markah-'+secId).classList.remove('show');
+  resetSection(secId);
+}
+
+function nextTab(secId){
+  const ids=sections.map(s=>s.id);
+  const idx=ids.indexOf(secId);
+  if(idx<ids.length-1) switchTab(ids[idx+1]);
+}
+
+function updateScore(secId){
+  const sec=document.getElementById('sec-'+secId);
+  let correct=0;
+  let answered=0;
+  sec.querySelectorAll('.answer-input').forEach(inp=>{
+    if(inp.classList.contains('correct')||inp.classList.contains('wrong')) answered++;
+    if(inp.classList.contains('correct')) correct++;
+  });
+  scores[secId].correct=correct;
+  document.getElementById('score-'+secId).textContent=`Markah: ${correct} / ${scores[secId].total}`;
+  updateProgress();
+
+  // Show markah panel when all questions are answered
+  const total=scores[secId].total;
+  if(answered===total){
+    showMarkah(secId);
+    if(correct===total){
+      toast('Tahniah! Markah penuh! 🎉🌟');
+      launchConfetti();
+      playFanfare();
+    }
+  }
+}
+
+function updateProgress(){
+  let total=0, correct=0;
+  Object.values(scores).forEach(s=>{ total+=s.total; correct+=s.correct; });
+  const pct=total>0?Math.round(correct/total*100):0;
+  document.getElementById('progress-bar').style.width=pct+'%';
+}
+
+function toast(msg){
+  const t=document.getElementById('toast');
+  t.textContent=msg; t.classList.add('show');
+  clearTimeout(t._t);
+  t._t=setTimeout(()=>t.classList.remove('show'),2500);
+}
+
+function switchTab(id){
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.toggle('active',b.dataset.id===id));
+  document.querySelectorAll('section').forEach(s=>s.classList.toggle('active',s.id==='sec-'+id));
+}
+
+// ─── Initialise ───────────────────────────────────────────────────────────────
+const nav=document.getElementById('tab-nav');
+const main=document.getElementById('main-content');
+
+const labels=["Vokal","Kecil","Besar","KV","KV+KV","V+KVK","KV+KV+KV","KVK","KV+KVK"];
+sections.forEach((sec,i)=>{
+  // Tab button
+  const btn=document.createElement('button');
+  btn.className='tab-btn'+(i===0?' active':'');
+  btn.textContent=labels[i];
+  btn.dataset.id=sec.id;
+  btn.onclick=()=>switchTab(sec.id);
+  nav.appendChild(btn);
+
+  // Section
+  const el=buildSection(sec);
+  if(i===0) el.classList.add('active');
+  main.appendChild(el);
+});
+</script>
+</body>
+</html>
